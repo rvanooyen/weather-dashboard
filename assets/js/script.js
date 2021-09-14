@@ -37,38 +37,59 @@
 //     }
 // };
 
-var cityGlobal = "";
-var stateGlobal = "";
-
 // user clicks on search button
-$("#search-btn").on("click", function(event) { 
-    console.log("here");       
+$("#search-btn").on("click", function(event) {           
     // get values from text fields
-    var city = document.getElementById("city-input").value;
-    cityGlobal = city;
-    var state = document.getElementById("state-input").value;
-    stateGlobal = state;
-    console.log(cityGlobal, stateGlobal);               
+    var city = document.getElementById("city-input").value;    
+    var data = getWeather(city);    
 });
 
-var getWeather = function() {
-    var apiKey = "f4574024d0e4cb4ce006c01517d66eb9";
+var getWeather = function(city) {
+    var apiKey = "&appid=" + "f4574024d0e4cb4ce006c01517d66eb9";
+    var urlWeather = "https://api.openweathermap.org/data/2.5/weather?q="
+    // var urlOneCall = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat + "&lon=" + lon + apiKey
     
-    fetch(
-        "api.openweathermap.org/data/2.5/weather?q=" + cityGlobal + "," + stateGlobal + "&appid=" + apiKey 
-        )
+    fetch(urlWeather + city + apiKey)
         .then(function(response) {
-        return response.json();
+            return response.json();           
         })
         .then(function(response) {
-        console.log(response.data[0]);
-    //   var responseContainerEl = document.querySelector('#response-container');
-    //   responseContainerEl.innerHTML = '';
-    //   var gifImg = document.createElement('img');
-    //   gifImg.setAttribute('src', response.data[0].images.fixed_height.url);
-    //   responseContainerEl.appendChild(gifImg);
+            var lat = response.coord.lat;
+            var lon = response.coord.lon;
+            // getOneCall(lat, lon);
+            // fetch(urlOneCall(lat, lon)
+            // .then(function(response) {
+            //     return response.json();                
+            // })
+            // .then(function(response) {
+                console.log(response);
+                console.log(response.main.humidity);
+                console.log(response.main.temp);
+                console.log(response.name); 
+                console.log(response.wind.speed);
+            // })           
+        });
+
+    
+    //     var responseContainerEl = document.querySelector('#response-container');
+    //     responseContainerEl.innerHTML = '';
+    //     var gifImg = document.createElement('img');
+    //     gifImg.setAttribute('src', response.data[0].images.fixed_height.url);
+    //     responseContainerEl.appendChild(gifImg);
+    //   });
+  // }    
+};
+
+var getOneCall = function(lat, lon) {
+    fetch(urlOneCall)
+            .then(function(response) {
+                return response.json();                
+            })
+            .then(function(response) {
+                console.log(response);
+                console.log(response.main.humidity);
+                console.log(response.main.temp);
+                console.log(response.name); 
+                console.log(response.wind.speed);
     });
-}
-
-getWeather();
-
+};
