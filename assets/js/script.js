@@ -30,6 +30,7 @@ var getWeather = function(city) {
 
                 // creates forecast elements
                 var cityEl = document.createElement("p");
+                var imgEl = document.createElement("img");
                 var tempEl = document.createElement("p");
                 var windEl = document.createElement("p");
                 var humidityEl = document.createElement("p");
@@ -39,8 +40,8 @@ var getWeather = function(city) {
                 // sets forecast elements
                 cityEl.setAttribute("id", "city-element");
                 cityEl.setAttribute("class", "city-element");
-                cityEl.textContent = city + "(" + moment().format("l") + ")" + response.current.weather[0].icon + ".png";                
-                iconEl.setAttribute("class", response.current.weather[0]);                                
+                cityEl.textContent = city + "(" + moment().format("l") + ")";
+                imgEl.setAttribute("src", "http://openweathermap.org/img/wn/" + response.current.weather[0].icon + "@2x.png");                                                
                 tempEl.setAttribute("id", "city-temp");
                 tempEl.textContent = "Temp: " + response.current.temp + " F";
                 windEl.setAttribute("id", "city-wind");
@@ -52,6 +53,7 @@ var getWeather = function(city) {
                 uvIndexEl.textContent = "UV Index: " + response.current.uvi;
 
                 // appends current weather to dashboard
+                cityEl.append(imgEl);
                 $("#city-element").append(iconEl);
                 $("#today-forecast").append(cityEl);                
                 $("#today-forecast").append(tempEl);
@@ -59,9 +61,44 @@ var getWeather = function(city) {
                 $("#today-forecast").append(humidityEl);
                 $("#today-forecast").append(uvIndexEl);
 
+                // local variables
+                var startDate = moment();                                    
+                var newDate = startDate;
+                var displayDate = "";                
+
                 // appends five day forecast to dashboard
                 for (i = 0; i < 5; i++) {
+                    var cardEl = document.createElement("div");
+                    var cardDateEl = document.createElement("p");
+                    var cardTempEl = document.createElement("p");
+                    var cardWindEl = document.createElement("p");
+                    var cardHumidityEl = document.createElement("p");
+                    var cardImgEl = document.createElement("img");                    
+                    
+                    // increments the date by one day each iteration
+                    newDate = newDate.add(1, "day");
+                    displayDate = moment(newDate).format("l");
 
+                    // sets forecast elements
+                    cardEl.setAttribute("id", "card-element");
+                    cardEl.setAttribute("class", "card col-sm-2");
+                    cardDateEl.setAttribute("id", "card-date");
+                    cardDateEl.textContent = displayDate;                    
+                    cardImgEl.setAttribute("src", "http://openweathermap.org/img/wn/" + response.daily[i++].weather[0].icon + "@2x.png");                                                
+                    cardTempEl.setAttribute("id", "card-temp");
+                    cardTempEl.textContent = "Temp: " + response.daily[i++].temp.day + " F";
+                    cardWindEl.setAttribute("id", "card-wind");
+                    cardWindEl.textContent = "Wind: " + response.daily[i++].wind_speed + " MPH";
+                    cardHumidityEl.setAttribute("id", "card-humiditiy");
+                    cardHumidityEl.textContent = "Humidity: " + response.daily[i++].humidity + "%";
+
+                    // appends cards to five day forecast
+                    cardEl.append(cardDateEl);
+                    cardEl.append(cardImgEl);
+                    cardEl.append(cardTempEl);
+                    cardEl.append(cardWindEl);
+                    cardEl.append(cardHumidityEl);
+                    $("#five-day-forecast").append(cardEl);
                 };                
             })           
         });     
