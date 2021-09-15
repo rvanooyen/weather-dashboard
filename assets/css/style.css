@@ -81,6 +81,9 @@ body {
   .card {
     display: grid;
     grid-template-rows: max-content 200px 1fr;
+    background-color: black;
+    color: white;
+    flex-wrap: wrap;
   }
   .container {
       width: 100%;
