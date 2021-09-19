@@ -10,3 +10,5 @@ Github page:
 https://github.com/rvanooyen/weather-dashboard
 
 Deployed App:
+
+https://rvanooyen.github.io/weather-dashboard/
